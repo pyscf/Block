@@ -196,7 +196,7 @@ irrep
   function symmetry.  If two numbers are given, it means that calculations of
   transition density matrix between wavefunctions with different irreps.  The
   irrep value follows the Molpro symmetry convention, see also
-  https://github.com/sunqm/pyscf/blob/master/future/dmrgscf/dmrg_sym.py
+  https://github.com/pyscf/dmrgscf/blob/master/pyscf/dmrgscf/dmrg_sym.py
 
 lastM
   followed by an integer.  Default is 500
