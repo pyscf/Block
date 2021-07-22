@@ -107,7 +107,10 @@ following settings in it::
 DMRG-CASSCF etc) will call this parallel executable through ``mpirun``
 interface.  ``BLOCKEXE_COMPRESS_NEVPT`` points to the **serially
 compiled** Block executable.  It is only needed by the compressed perturber
-NEVPT2 method.  Although this Block executable file is not MPI-parallelized, the
+NEVPT2 method.  Note the serial version of Block is slightly different to the
+parallel Block with compiling flag ``USE_MPI=yes``.  Specifically, NEVPT2
+implementation in the serial code is not available in the parallelized code.
+Although this Block executable file is not MPI-parallelized, the
 DMRG-NEVPT2 program are efficiently parallelized in a different manner.
 Note the parameter ``MPIPREFIX`` should be adjusted according to your
 job scheduler, eg::
