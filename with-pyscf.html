@@ -1,17 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DMRG for electronic structure calculations &#8212; BLOCK 1.5.0 documentation</title>
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Block program as a standalone solver" href="examples.html" />
     <link rel="prev" title="Block Installation" href="build.html" /> 
@@ -25,55 +26,10 @@
         <li class="right" >
           <a href="build.html" title="Block Installation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">BLOCK 1.5.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">BLOCK 1.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">DMRG for electronic structure calculations</a></li> 
       </ul>
-    </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">DMRG for electronic structure calculations</a><ul>
-<li><a class="reference internal" href="#casci-casscf-in-pyscf">CASCI/CASSCF in PySCF</a></li>
-<li><a class="reference internal" href="#setup-block-in-pyscf-package">Setup Block in PySCF package</a></li>
-<li><a class="reference internal" href="#control-block-program-through-pyscf-wrapper">Control Block program through PySCF wrapper</a><ul>
-<li><a class="reference internal" href="#parallelism">Parallelism</a></li>
-<li><a class="reference internal" href="#bond-dimension-and-sweep-scheduler">Bond dimension and sweep scheduler</a></li>
-<li><a class="reference internal" href="#dmrgci-functions-and-attributes">DMRGCI functions and attributes</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#state-average-and-state-specific-dmrg-casci-dmrg-casscf">State-average and state-specific DMRG-CASCI/DMRG-CASSCF</a></li>
-<li><a class="reference internal" href="#dmrg-nevpt2">DMRG-NEVPT2</a></li>
-<li><a class="reference internal" href="#case-study">Case study</a></li>
-<li><a class="reference internal" href="#run-block-standalone">Run Block standalone</a></li>
-</ul>
-</li>
-</ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="build.html"
-                        title="previous chapter">Block Installation</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="examples.html"
-                        title="next chapter">Block program as a standalone solver</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/with-pyscf.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
@@ -131,26 +87,19 @@ prepare the active space through this selecting-then-reordering procedure.
 To simplify this procedure, PySCF package provides some helper functions, such
 as <code class="xref py py-meth docutils literal notranslate"><span class="pre">sort_mo()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">sort_mo_by_irrep()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">dmet_cas.guess_cas()</span></code>,
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">atomic_valence()</span></code> <a class="footnote-reference brackets" href="#id3" id="id1">1</a>.
-In the following example, we selected 4 <span class="math">\pi</span> orbitals and 1 <span class="math">\sigma</span>
-orbital and 1 <span class="math">\sigma^*</span> orbital from mean-field molecular orbitals to
+In the following example, we selected 4 <span class="math notranslate nohighlight">\(\pi\)</span> orbitals and 1 <span class="math notranslate nohighlight">\(\sigma\)</span>
+orbital and 1 <span class="math notranslate nohighlight">\(\sigma^*\)</span> orbital from mean-field molecular orbitals to
 form the active space using the helper function <code class="xref py py-meth docutils literal notranslate"><span class="pre">sort_mo_by_irrep()</span></code>.</p>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">gto</span><span class="p">,</span> <span class="n">scf</span><span class="p">,</span> <span class="n">mcscf</span>
- <span class="n">mol</span> <span class="o">=</span> <span class="n">gto</span><span class="o">.</span><span class="n">M</span><span class="p">(</span><span class="n">atom</span><span class="o">=</span><span class="s2">&quot;N 0 0 0; N 0 0 1&quot;</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s2">&quot;ccpvdz&quot;</span><span class="p">,</span> <span class="n">symmetry</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
- <span class="n">mf</span> <span class="o">=</span> <span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-
- <span class="n">mc</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
- <span class="n">ncas_by_irreps</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;E1ux&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;E1uy&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;A1g&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;A1u&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">}</span>
- <span class="n">orbs</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">sort_mo_by_irrep</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">,</span> <span class="n">ncas_by_irreps</span><span class="p">)</span>
- <span class="n">mc</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="n">orbs</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="kn">from</span> <span class="nn">pyscf</span> <span class="kn">import</span> <span class="n">gto</span><span class="p">,</span> <span class="n">scf</span><span class="p">,</span> <span class="n">mcscf</span>
+<span class="linenos">2</span> <span class="n">mol</span> <span class="o">=</span> <span class="n">gto</span><span class="o">.</span><span class="n">M</span><span class="p">(</span><span class="n">atom</span><span class="o">=</span><span class="s2">&quot;N 0 0 0; N 0 0 1&quot;</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s2">&quot;ccpvdz&quot;</span><span class="p">,</span> <span class="n">symmetry</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">3</span> <span class="n">mf</span> <span class="o">=</span> <span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span> <span class="n">mc</span> <span class="o">=</span> <span class="n">mcscf</span><span class="o">.</span><span class="n">CASSCF</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="linenos">6</span> <span class="n">ncas_by_irreps</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;E1ux&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;E1uy&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;A1g&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;A1u&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">}</span>
+<span class="linenos">7</span> <span class="n">orbs</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">sort_mo_by_irrep</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">,</span> <span class="n">ncas_by_irreps</span><span class="p">)</span>
+<span class="linenos">8</span> <span class="n">mc</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="n">orbs</span><span class="p">)</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 <p>In the above example, you should read the input as a Python program.  Line 2
 creates a molecule and applied mean-field calculation on the molecule.  The
 mean-field results are saved in <code class="docutils literal notranslate"><span class="pre">mf</span></code> object so that you can access them later.
@@ -352,21 +301,21 @@ is efficient and stable to converge.</p>
 </div>
 <div class="section" id="dmrgci-functions-and-attributes">
 <h3>DMRGCI functions and attributes<a class="headerlink" href="#dmrgci-functions-and-attributes" title="Permalink to this headline">¶</a></h3>
-<dl class="class">
-<dt id="DMRGCI">
-<em class="property">class </em><code class="sig-name descname">DMRGCI</code><a class="headerlink" href="#DMRGCI" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="DMRGCI">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DMRGCI</span></span><a class="headerlink" href="#DMRGCI" title="Permalink to this definition">¶</a></dt>
 <dd><p>The interface of Block and PySCF.  The class exposes the Block keywords to
 PySCF so that the Block code can be run and controlled in Python script.</p>
-<dl class="attribute">
-<dt id="DMRGCI.approx_maxIter">
-<code class="sig-name descname">approx_maxIter</code><a class="headerlink" href="#DMRGCI.approx_maxIter" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.approx_maxIter">
+<span class="sig-name descname"><span class="pre">approx_maxIter</span></span><a class="headerlink" href="#DMRGCI.approx_maxIter" title="Permalink to this definition">¶</a></dt>
 <dd><p>In 1-step DMRG-CASSCF algorithm, the number of sweeps during the approximate
 FCI/DMRG updating.  Default is 4</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.block_extra_keyword">
-<code class="sig-name descname">block_extra_keyword</code><a class="headerlink" href="#DMRGCI.block_extra_keyword" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.block_extra_keyword">
+<span class="sig-name descname"><span class="pre">block_extra_keyword</span></span><a class="headerlink" href="#DMRGCI.block_extra_keyword" title="Permalink to this definition">¶</a></dt>
 <dd><p>It allows you to input Block keywords which were not exposed in <a class="reference internal" href="#DMRGCI" title="DMRGCI"><code class="xref py py-class docutils literal notranslate"><span class="pre">DMRGCI</span></code></a>
 class.  Some commonly used keywords include</p>
 <blockquote>
@@ -379,41 +328,41 @@ class.  Some commonly used keywords include</p>
 <p>See <a class="reference internal" href="keywords.html#keywords-list"><span class="std std-ref">Keywords</span></a> for the details of Block code keywords</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.configFile">
-<code class="sig-name descname">configFile</code><a class="headerlink" href="#DMRGCI.configFile" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.configFile">
+<span class="sig-name descname"><span class="pre">configFile</span></span><a class="headerlink" href="#DMRGCI.configFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>By default, keywords are written to file dmrg.conf</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.dmrg_switch_tol">
-<code class="sig-name descname">dmrg_switch_tol</code><a class="headerlink" href="#DMRGCI.dmrg_switch_tol" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.dmrg_switch_tol">
+<span class="sig-name descname"><span class="pre">dmrg_switch_tol</span></span><a class="headerlink" href="#DMRGCI.dmrg_switch_tol" title="Permalink to this definition">¶</a></dt>
 <dd><p>In 1-step DMRG-CASSCF, when the orbital gradients is smaller than this
 value, the DMRG calculation starts to read the solution from previous step
 as the initial guess (to reduce the computational cost).  Default is 1e-3.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.executable">
-<code class="sig-name descname">executable</code><a class="headerlink" href="#DMRGCI.executable" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.executable">
+<span class="sig-name descname"><span class="pre">executable</span></span><a class="headerlink" href="#DMRGCI.executable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default is settings.BLOCKEXE</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.integralFile">
-<code class="sig-name descname">integralFile</code><a class="headerlink" href="#DMRGCI.integralFile" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.integralFile">
+<span class="sig-name descname"><span class="pre">integralFile</span></span><a class="headerlink" href="#DMRGCI.integralFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>The file to store FCIDUMP.  Default is FCIDUMP</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.maxIter">
-<code class="sig-name descname">maxIter</code><a class="headerlink" href="#DMRGCI.maxIter" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.maxIter">
+<span class="sig-name descname"><span class="pre">maxIter</span></span><a class="headerlink" href="#DMRGCI.maxIter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Max number of sweeps</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.memory">
-<code class="sig-name descname">memory</code><a class="headerlink" href="#DMRGCI.memory" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.memory">
+<span class="sig-name descname"><span class="pre">memory</span></span><a class="headerlink" href="#DMRGCI.memory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximum memory (in GB) to use.  Default is 2 GB.  When you enabled multi
 threading and had large bond dimensions <code class="xref py py-attr docutils literal notranslate"><span class="pre">maxM</span></code>, you might need
 more memory to hold the intermediates.  Generally, large memory is helpful
@@ -423,39 +372,39 @@ to improve efficiency.</p>
 </div>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.mpiprefix">
-<code class="sig-name descname">mpiprefix</code><a class="headerlink" href="#DMRGCI.mpiprefix" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.mpiprefix">
+<span class="sig-name descname"><span class="pre">mpiprefix</span></span><a class="headerlink" href="#DMRGCI.mpiprefix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default is settings.MPIPREFIX</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.nroots">
-<code class="sig-name descname">nroots</code><a class="headerlink" href="#DMRGCI.nroots" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.nroots">
+<span class="sig-name descname"><span class="pre">nroots</span></span><a class="headerlink" href="#DMRGCI.nroots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of states to solver simultaneously.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.num_thrds">
-<code class="sig-name descname">num_thrds</code><a class="headerlink" href="#DMRGCI.num_thrds" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.num_thrds">
+<span class="sig-name descname"><span class="pre">num_thrds</span></span><a class="headerlink" href="#DMRGCI.num_thrds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of OpenMP threads to be used in each MPI process.  Default is 1.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.outputFile">
-<code class="sig-name descname">outputFile</code><a class="headerlink" href="#DMRGCI.outputFile" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.outputFile">
+<span class="sig-name descname"><span class="pre">outputFile</span></span><a class="headerlink" href="#DMRGCI.outputFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Block output.  Default is dmrg.out</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.outputlevel">
-<code class="sig-name descname">outputlevel</code><a class="headerlink" href="#DMRGCI.outputlevel" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.outputlevel">
+<span class="sig-name descname"><span class="pre">outputlevel</span></span><a class="headerlink" href="#DMRGCI.outputlevel" title="Permalink to this definition">¶</a></dt>
 <dd><p>0 (less output) to 3 (very noise).  Default is 2.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.restart">
-<code class="sig-name descname">restart</code><a class="headerlink" href="#DMRGCI.restart" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.restart">
+<span class="sig-name descname"><span class="pre">restart</span></span><a class="headerlink" href="#DMRGCI.restart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to read the wave function from the temporary directory (specified by
 <a class="reference internal" href="#DMRGCI.scratchDirectory" title="DMRGCI.scratchDirectory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scratchDirectory</span></code></a>) as the initial guess.</p>
 <div class="admonition note">
@@ -467,16 +416,16 @@ DMRG program crash.</p>
 </div>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.runtimeDir">
-<code class="sig-name descname">runtimeDir</code><a class="headerlink" href="#DMRGCI.runtimeDir" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.runtimeDir">
+<span class="sig-name descname"><span class="pre">runtimeDir</span></span><a class="headerlink" href="#DMRGCI.runtimeDir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Where to put files dmrg.conf, dmrg.out etc temporarily.  Default is current
 directory (where you execute python).</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.scratchDirectory">
-<code class="sig-name descname">scratchDirectory</code><a class="headerlink" href="#DMRGCI.scratchDirectory" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.scratchDirectory">
+<span class="sig-name descname"><span class="pre">scratchDirectory</span></span><a class="headerlink" href="#DMRGCI.scratchDirectory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The directory where to store the intermediates and wave functions.  Default
 is settings.BLOCKSCRATCHDIR.</p>
 <div class="admonition note">
@@ -488,9 +437,9 @@ two DMRG-CASSCF calculations are run on the same node.</p>
 </div>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.spin">
-<code class="sig-name descname">spin</code><a class="headerlink" href="#DMRGCI.spin" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.spin">
+<span class="sig-name descname"><span class="pre">spin</span></span><a class="headerlink" href="#DMRGCI.spin" title="Permalink to this definition">¶</a></dt>
 <dd><p>2S (= nelec_alpha - nelec_beta).  If the argument <code class="docutils literal notranslate"><span class="pre">nelec</span></code> of
 <a class="reference internal" href="#DMRGCI.kernel" title="DMRGCI.kernel"><code class="xref py py-meth docutils literal notranslate"><span class="pre">DMRGCI.kernel()</span></code></a> function is a two-item list to represent the number of
 alpha and beta electrons, the Block program will use the given alpha and
@@ -498,21 +447,21 @@ beta electron numbers to determine the spin.  Otherwise, Block program
 takes this value as the spin of the system.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.twodot_to_onedot">
-<code class="sig-name descname">twodot_to_onedot</code><a class="headerlink" href="#DMRGCI.twodot_to_onedot" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.twodot_to_onedot">
+<span class="sig-name descname"><span class="pre">twodot_to_onedot</span></span><a class="headerlink" href="#DMRGCI.twodot_to_onedot" title="Permalink to this definition">¶</a></dt>
 <dd><p>When to switch to one-dot algorithm.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.weights">
-<code class="sig-name descname">weights</code><a class="headerlink" href="#DMRGCI.weights" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.weights">
+<span class="sig-name descname"><span class="pre">weights</span></span><a class="headerlink" href="#DMRGCI.weights" title="Permalink to this definition">¶</a></dt>
 <dd><p>In state average calculation, the weight assocated to each state.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="DMRGCI.wfnsym">
-<code class="sig-name descname">wfnsym</code><a class="headerlink" href="#DMRGCI.wfnsym" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DMRGCI.wfnsym">
+<span class="sig-name descname"><span class="pre">wfnsym</span></span><a class="headerlink" href="#DMRGCI.wfnsym" title="Permalink to this definition">¶</a></dt>
 <dd><p>In the DMRGCI interface, the wave function symmetry ID follows the PySCF
 convention (see <a class="reference external" href="http://www.pyscf.org/symm.html">http://www.pyscf.org/symm.html</a>).  But Block code follows
 Molpro convention.  A mapping between two symmetry ID is invoked in the
@@ -520,52 +469,52 @@ DMRGCI initialization function.  It is recommended to put the label of wave
 function  (such as ‘A1g’, ‘B2u’) here to avoid the ambiguity.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="DMRGCI.make_rdm1">
-<code class="sig-name descname">make_rdm1</code><span class="sig-paren">(</span><em class="sig-param">state</em>, <em class="sig-param">norb</em>, <em class="sig-param">nelec</em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.make_rdm1" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="DMRGCI.make_rdm1">
+<span class="sig-name descname"><span class="pre">make_rdm1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nelec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.make_rdm1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given state ID, read its 1-particle density matrix from the directory
 indicated by <a class="reference internal" href="#DMRGCI.scratchDirectory" title="DMRGCI.scratchDirectory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scratchDirectory</span></code></a>.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="DMRGCI.make_rdm12">
-<code class="sig-name descname">make_rdm12</code><span class="sig-paren">(</span><em class="sig-param">state</em>, <em class="sig-param">norb</em>, <em class="sig-param">nelec</em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.make_rdm12" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="DMRGCI.make_rdm12">
+<span class="sig-name descname"><span class="pre">make_rdm12</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nelec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.make_rdm12" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given state ID, read its 1-particle and 2-particle density matrices from the
 directory indicated by <a class="reference internal" href="#DMRGCI.scratchDirectory" title="DMRGCI.scratchDirectory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scratchDirectory</span></code></a>.  Note the 2-particle
 density matrix is reordered to match the 2e integrals of chemists’ notation,
-dm2[p,q,r,s] <span class="math">= \langle p^\dagger r^\dagger s q\rangle</span>.</p>
+dm2[p,q,r,s] <span class="math notranslate nohighlight">\(= \langle p^\dagger r^\dagger s q\rangle\)</span>.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="DMRGCI.make_rdm123">
-<code class="sig-name descname">make_rdm123</code><span class="sig-paren">(</span><em class="sig-param">state</em>, <em class="sig-param">norb</em>, <em class="sig-param">nelec</em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.make_rdm123" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="DMRGCI.make_rdm123">
+<span class="sig-name descname"><span class="pre">make_rdm123</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nelec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.make_rdm123" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given state ID, read 1, 2 and 3-particle density matrices from the
 directory indicated by <a class="reference internal" href="#DMRGCI.scratchDirectory" title="DMRGCI.scratchDirectory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scratchDirectory</span></code></a>.  Note the 2-particle
 density matrix is reordered to match the 2e integrals of chemists’ notation.
-dm2[p,q,r,s] = <span class="math">\langle p^\dagger r^\dagger s q\rangle</span>;  The
+dm2[p,q,r,s] = <span class="math notranslate nohighlight">\(\langle p^\dagger r^\dagger s q\rangle\)</span>;  The
 3-particle density matrix takes the similar convention,
-dm3[p,q,r,s,t,u] <span class="math">= \langle p^\dagger r^\dagger t^\dagger u s q\rangle</span>.</p>
+dm3[p,q,r,s,t,u] <span class="math notranslate nohighlight">\(= \langle p^\dagger r^\dagger t^\dagger u s q\rangle\)</span>.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="DMRGCI.trans_rdm1">
-<code class="sig-name descname">trans_rdm1</code><span class="sig-paren">(</span><em class="sig-param">statebra</em>, <em class="sig-param">stateket</em>, <em class="sig-param">norb</em>, <em class="sig-param">nelec</em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.trans_rdm1" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="DMRGCI.trans_rdm1">
+<span class="sig-name descname"><span class="pre">trans_rdm1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">statebra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stateket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nelec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.trans_rdm1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given the state ID of bra and ket, read the 1-particle density matrix from
 the directory indicated by <a class="reference internal" href="#DMRGCI.scratchDirectory" title="DMRGCI.scratchDirectory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scratchDirectory</span></code></a>.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="DMRGCI.trans_rdm12">
-<code class="sig-name descname">trans_rdm12</code><span class="sig-paren">(</span><em class="sig-param">statebra</em>, <em class="sig-param">stateket</em>, <em class="sig-param">norb</em>, <em class="sig-param">nelec</em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.trans_rdm12" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="DMRGCI.trans_rdm12">
+<span class="sig-name descname"><span class="pre">trans_rdm12</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">statebra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stateket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nelec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.trans_rdm12" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given the state ID of bra and ket, read the 1-particle and 2-particle
 density matrices from the directory indicated by <a class="reference internal" href="#DMRGCI.scratchDirectory" title="DMRGCI.scratchDirectory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scratchDirectory</span></code></a>.
 Note the 2-particle density matrix is reordered to match the 2e integrals of
-chemists’ notation, dm2[p,q,r,s] <span class="math">= \langle p^\dagger r^\dagger s q\rangle</span>.</p>
+chemists’ notation, dm2[p,q,r,s] <span class="math notranslate nohighlight">\(= \langle p^\dagger r^\dagger s q\rangle\)</span>.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="DMRGCI.kernel">
-<code class="sig-name descname">kernel</code><span class="sig-paren">(</span><em class="sig-param">h1e</em>, <em class="sig-param">eri</em>, <em class="sig-param">norb</em>, <em class="sig-param">nelec</em>, <em class="sig-param">fciRestart=None</em>, <em class="sig-param">ecore=0</em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.kernel" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="DMRGCI.kernel">
+<span class="sig-name descname"><span class="pre">kernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h1e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nelec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fciRestart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ecore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGCI.kernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>The kernel function to call Block program.  “eri” is the array of 2-electron
 integrals (ij|kl).  8-fold permutation symmetry is required.
 The function returns the total energy and the state ID which is
@@ -576,14 +525,14 @@ list is the energy of each state.  The second is a list of state ID.</p>
 
 </dd></dl>
 
-<dl class="function">
-<dt id="DMRGSCF">
-<code class="sig-name descname">DMRGSCF</code><span class="sig-paren">(</span><em class="sig-param">mf</em>, <em class="sig-param">norb</em>, <em class="sig-param">nelec</em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGSCF" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="DMRGSCF">
+<span class="sig-name descname"><span class="pre">DMRGSCF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nelec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DMRGSCF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut function to setup CASSCF with the DMRG solver.  The DMRG
 solver is properly initialized in this function so that the 1-step
 algorithm can applied efficiently in DMRG-CASSCF method.</p>
 <p>Examples:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">gto</span><span class="o">.</span><span class="n">M</span><span class="p">(</span><span class="n">atom</span><span class="o">=</span><span class="s1">&#39;N 0 0 0; N 0 0 1&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">gto</span><span class="o">.</span><span class="n">M</span><span class="p">(</span><span class="n">atom</span><span class="o">=</span><span class="s1">&#39;N 0 0 0; N 0 0 1&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mf</span> <span class="o">=</span> <span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mc</span> <span class="o">=</span> <span class="n">DMRGSCF</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mc</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
@@ -881,7 +830,54 @@ input config <code class="file docutils literal notranslate"><span class="pre">d
 </div>
 
 
+            <div class="clearer"></div>
           </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DMRG for electronic structure calculations</a><ul>
+<li><a class="reference internal" href="#casci-casscf-in-pyscf">CASCI/CASSCF in PySCF</a></li>
+<li><a class="reference internal" href="#setup-block-in-pyscf-package">Setup Block in PySCF package</a></li>
+<li><a class="reference internal" href="#control-block-program-through-pyscf-wrapper">Control Block program through PySCF wrapper</a><ul>
+<li><a class="reference internal" href="#parallelism">Parallelism</a></li>
+<li><a class="reference internal" href="#bond-dimension-and-sweep-scheduler">Bond dimension and sweep scheduler</a></li>
+<li><a class="reference internal" href="#dmrgci-functions-and-attributes">DMRGCI functions and attributes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#state-average-and-state-specific-dmrg-casci-dmrg-casscf">State-average and state-specific DMRG-CASCI/DMRG-CASSCF</a></li>
+<li><a class="reference internal" href="#dmrg-nevpt2">DMRG-NEVPT2</a></li>
+<li><a class="reference internal" href="#case-study">Case study</a></li>
+<li><a class="reference internal" href="#run-block-standalone">Run Block standalone</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="build.html"
+                        title="previous chapter">Block Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="next chapter">Block program as a standalone solver</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/with-pyscf.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -895,12 +891,13 @@ input config <code class="file docutils literal notranslate"><span class="pre">d
         <li class="right" >
           <a href="build.html" title="Block Installation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">BLOCK 1.5.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">BLOCK 1.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">DMRG for electronic structure calculations</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, Garnet Kin-Lic Chan.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.1.
     </div>
   </body>
 </html>
