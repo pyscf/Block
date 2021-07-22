@@ -31,10 +31,10 @@ import shlex
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.pngmath',
+    'sphinx.ext.imgmath',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
-    'sphinxtogithub',
+#    'sphinxtogithub',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

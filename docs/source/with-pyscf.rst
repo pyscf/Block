@@ -551,7 +551,7 @@ states simultaneously with attribute :attr:`nroots`::
     mc.fcisolver.nroots = 5
     mc.kernel()
 
-In PySCF `source code <https://github.com/sunqm/pyscf/blob/master/examples/dmrg>`_,
+In PySCF `source code <https://github.com/pyscf/dmrgscf/tree/master/examples>`_,
 you can find more examples of state-average and state-specific calculations.
 
 
